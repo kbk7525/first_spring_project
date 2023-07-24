@@ -3,9 +3,7 @@ package project.tasteroad.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import project.tasteroad.dto.MemberDTO;
 import project.tasteroad.service.MemberService;
 
@@ -50,5 +48,20 @@ public class MemberController {
         else {
             return "login";
         }
+    }
+
+    //로그아웃
+    @GetMapping("/member/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "index";
+    }
+
+    //아이디 중복체크
+    @PostMapping("/member/id-check")
+    public @ResponseBody String idCheck(@RequestParam("memberId") String memberId) {
+        System.out.println("memberId = " + memberId);
+        String checkResult = memberService.idCheck(memberId);
+        return checkResult;
     }
 }

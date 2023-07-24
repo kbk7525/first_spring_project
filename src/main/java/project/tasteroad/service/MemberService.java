@@ -50,4 +50,16 @@ public class MemberService {
             return null;
         }
     }
+
+    public String idCheck(String memberId) {
+        Optional<MemberEntity> byId = memberRepository.findById(memberId);
+        //조회결과 아이디가 있으면 사용X
+        if(byId.isPresent()) {
+            return null;
+        }
+        //사용 가능
+        else {
+            return "ok";
+        }
+    }
 }

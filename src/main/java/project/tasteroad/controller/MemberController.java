@@ -50,7 +50,7 @@ public class MemberController {
         }
     }
 
-    //로그아웃
+    //로그아웃하면 index페이지로 이동
     @GetMapping("/member/logout")
     public String logout(HttpSession session) {
         session.invalidate();

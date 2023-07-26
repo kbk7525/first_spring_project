@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import project.tasteroad.dto.BoardDTO;
-import project.tasteroad.repository.BoardRepository;
 import project.tasteroad.service.BoardService;
 
 @Controller

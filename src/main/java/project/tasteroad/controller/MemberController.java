@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import project.tasteroad.dto.MemberDTO;
 import project.tasteroad.service.MemberService;
-
 import javax.servlet.http.HttpSession;
 
 @Slf4j
@@ -41,7 +40,6 @@ public class MemberController {
         //로그인 성공
         if(loginResult != null) {
             session.setAttribute("loginId", loginResult.getId());
-            log.info("getId = {}", loginResult.getId());
             return "main";
         }
         //실패
@@ -60,7 +58,6 @@ public class MemberController {
     //아이디 중복체크
     @PostMapping("/member/id-check")
     public @ResponseBody String idCheck(@RequestParam("memberId") String memberId) {
-        System.out.println("memberId = " + memberId);
         String checkResult = memberService.idCheck(memberId);
         return checkResult;
     }

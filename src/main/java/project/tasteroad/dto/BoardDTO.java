@@ -12,6 +12,6 @@ public class BoardDTO {
     private String title; //게시글 제목
     private String content; //게시글 내용
     private String category; //음식점 카테고리
-    private int rate; //별점
+    private String rate; //별점
     private String restaurant; //식당 이름
 }

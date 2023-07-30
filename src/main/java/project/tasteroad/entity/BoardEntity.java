@@ -27,7 +27,7 @@ public class BoardEntity {
     private String category; //음식점 카테고리
 
     @Column
-    private int rate; //별점
+    private String rate; //별점
 
     @Column
     private String restaurant; //식당 이름
@@ -39,7 +39,7 @@ public class BoardEntity {
         boardEntity.setTitle(boardDTO.getTitle());
         boardEntity.setContent(boardDTO.getContent());
         boardEntity.setCategory(boardDTO.getCategory());
-        boardEntity.setRate(1);
+        boardEntity.setRate(boardDTO.getRate());
         boardEntity.setRestaurant(boardDTO.getRestaurant());
         return boardEntity;
     }

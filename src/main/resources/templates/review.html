@@ -6,10 +6,29 @@
 </head>
 <body>
     <form action="/board/review" method="post">
+        작성자:<input type="text" name="id" id="id" th:value="${session.loginId}" readonly><br>
         제목:<input type="text" name="title"><br>
         <textarea name="content" cols="30" rows="10"></textarea><br>
+        <fieldset>
+            <legend>카테고리</legend>
+            <select name="category">
+                <option>한식</option>
+                <option>양식</option>
+                <option>일식</option>
+                <option>중식</option>
+            </select>
+        </fieldset>
+        <fieldset>
+            <legend>별점</legend>
+            <select name="rate">
+                <option>5</option>
+                <option>4</option>
+                <option>3</option>
+                <option>2</option>
+                <option>1</option>
+            </select>
+        </fieldset>
         <input type="submit" value="완료">
-
     </form>
 </body>
 </html>

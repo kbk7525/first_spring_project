@@ -24,7 +24,7 @@ public class MemberController {
     @PostMapping("/member/save")
     public String save(@ModelAttribute MemberDTO memberDTO) {
         memberService.save(memberDTO);
-        return "login";
+        return "redirect:/member/login";
     }
 
     //로그인 버튼 누르면
@@ -40,11 +40,11 @@ public class MemberController {
         //로그인 성공
         if(loginResult != null) {
             session.setAttribute("loginId", loginResult.getId());
-            return "main";
+            return "redirect:/main";
         }
         //실패
         else {
-            return "login";
+            return "redirect:/member/login";
         }
     }
 
@@ -52,7 +52,7 @@ public class MemberController {
     @GetMapping("/member/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "index";
+        return "redirect:/";
     }
 
     //아이디 중복체크
@@ -60,5 +60,11 @@ public class MemberController {
     public @ResponseBody String idCheck(@RequestParam("memberId") String memberId) {
         String checkResult = memberService.idCheck(memberId);
         return checkResult;
+    }
+
+    //마이페이지 이동
+    @GetMapping("member/mypage")
+    public String infoView() {
+        return "mypage";
     }
 }

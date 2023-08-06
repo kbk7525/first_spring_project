@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>글 상세보기</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>작성자</th>
+            <td th:text="${board.id}"></td>
+        </tr>
+        <tr>
+            <th>식당이름</th>
+            <td th:text="${board.restaurant}"></td>
+        </tr>
+        <tr>
+            <th>카테고리</th>
+            <td th:text="${board.category}"></td>
+        </tr>
+        <tr>
+            <th>별점</th>
+            <td th:text="${board.rate}"></td>
+        </tr>
+        <tr>
+            <th>제목</th>
+            <td th:text="${board.title}"></td>
+        </tr>
+        <tr>
+            <th>내용</th>
+            <td th:text="${board.content}"></td>
+        </tr>
+    </table>
+    <br>
+    <div id="map" style="width:60%;height:350px;"></div>
+
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0454ac8612a2837299b083a6aa492029"></script>
+    <script th:inline="javascript">
+        let obj = [[${board}]];
+        let mapContainer = document.getElementById('map'), // 지도를 표시할 div
+            mapOption = {
+                center: new kakao.maps.LatLng(obj.latitude, obj.longitude), // 지도의 중심좌표
+                level: 3 // 지도의 확대 레벨
+            };
+
+        let map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+        // 마커가 표시될 위치입니다
+        let markerPosition  = new kakao.maps.LatLng(obj.latitude, obj.longitude);
+
+        // 마커를 생성합니다
+        let marker = new kakao.maps.Marker({
+            position: markerPosition
+        });
+
+        // 마커가 지도 위에 표시되도록 설정합니다
+        marker.setMap(map);
+    </script>
+    <br>
+    <div th:if="${session.loginId == board.id}">
+        <button onclick="update()">수정</button>
+        <button th:onclick="|location.href='@{/board/delete(num=${board.num})}'|">삭제</button>
+    </div>
+    <button th:onclick="|location.href='@{/board/list}'|">목록</button>
+</body>
+<script>
+    const update = () => {
+        const num = [[${board.num}]];
+        location.href = "/board/update/" +num;
+    }
+</script>
+</html>

@@ -32,6 +32,12 @@ public class BoardEntity {
     @Column
     private String restaurant; //식당 이름
 
+    @Column
+    private String latitude; //위도
+
+    @Column
+    private String longitude; //경도
+
     public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
         BoardEntity boardEntity = new BoardEntity();
         boardEntity.setNum(boardDTO.getNum());
@@ -41,6 +47,22 @@ public class BoardEntity {
         boardEntity.setCategory(boardDTO.getCategory());
         boardEntity.setRate(boardDTO.getRate());
         boardEntity.setRestaurant(boardDTO.getRestaurant());
+        boardEntity.setLatitude(boardDTO.getLatitude());
+        boardEntity.setLongitude(boardDTO.getLongitude());
+        return boardEntity;
+    }
+
+    public static BoardEntity toUpdateEntity(BoardDTO boardDTO) {
+        BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setNum(boardDTO.getNum());
+        boardEntity.setId(boardDTO.getId());
+        boardEntity.setTitle(boardDTO.getTitle());
+        boardEntity.setContent(boardDTO.getContent());
+        boardEntity.setCategory(boardDTO.getCategory());
+        boardEntity.setRate(boardDTO.getRate());
+        boardEntity.setRestaurant(boardDTO.getRestaurant());
+        boardEntity.setLatitude(boardDTO.getLatitude());
+        boardEntity.setLongitude(boardDTO.getLongitude());
         return boardEntity;
     }
 }

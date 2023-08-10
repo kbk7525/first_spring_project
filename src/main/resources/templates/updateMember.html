@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 정보 수정</title>
+</head>
+<body>
+    <form action="/member/update" method="post">
+        <input type="hidden" th:value="${updateMember.num}" name="num">
+        이름:<input type="text" th:value="${updateMember.name}" name="name"readonly><br>
+        아이디: <input type="text" th:value="${updateMember.id}" name="id"readonly><br>
+        비밀번호:<input type="password" th:value="${updateMember.pw}"readonly><br>
+        변경할 비밀번호: <input type="password" name="pw" placeholder="새 비밀번호를 입력하세요" autofocus><br>
+        <input type="submit" value="완료">
+    </form>
+    <button th:onclick="|location.href='@{/member/delete/(num=${updateMember.num})}'|">탈퇴</button>
+</body>
+</html>

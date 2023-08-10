@@ -5,10 +5,22 @@
     <title>마이페이지</title>
 </head>
 <body>
-    <a href="/main">메인페이지</a>
-    <div>
-        <button>회원정보 수정</button>
-        <button>탈퇴</button>
-    </div>
+    <a href="/main/paging">메인페이지</a>
+    <a href="/member/update">회원 정보 수정</a>
+    <h2>내가 쓴 리뷰</h2>
+    <table>
+        <tr>
+            <th>제목</th>
+            <th>식당이름</th>
+            <th>카테고리</th>
+            <th>별점</th>
+        </tr>
+        <tr th:each="list: ${myList}">
+            <td><a th:href="@{|/board/${list.num}|}" th:text="${list.title}"></a></td>
+            <td th:text="${list.restaurant}"></td>
+            <td th:text="${list.category}"></td>
+            <td th:text="${list.rate}"></td>
+        </tr>
+    </table>
 </body>
 </html>

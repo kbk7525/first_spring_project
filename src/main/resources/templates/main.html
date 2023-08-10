@@ -8,9 +8,38 @@
     <a href="/member/logout">로그아웃</a>
     <a href="/member/mypage">마이페이지</a>
     <a href="/board/review">글 작성</a>
-    <a href="/board/list">모든 리뷰 보기</a>
+    <a href="/board/korean-food">한식</a>
+    <a href="/board/western-food">양식</a>
+    <a href="/board/japanese-food">일식</a>
+    <a href="/board/chinese-food">중식</a>
     <div>
         안녕하세요 맛집게시판입니다!
     </div>
+    <table>
+        <tr>
+            <th>제목</th>
+            <th>식당이름</th>
+            <th>작성자</th>
+            <th>카테고리</th>
+            <th>별점</th>
+        </tr>
+        <tr th:each="board: ${pageList}">
+            <td><a th:href="@{|/board/${board.num}|(page=${pageList.number+1})}" th:text="${board.title}"></a></td>
+            <td th:text="${board.restaurant}"></td>
+            <td th:text="${board.id}"></td>
+            <td th:text="${board.category}"></td>
+            <td th:text="${board.rate}"></td>
+        </tr>
+    </table>
+    <a th:href="@{/main/paging(page=1)}"><<</a>
+    <a th:href="${pageList.first} ? '#' : @{/main/paging(page=${pageList.number})}"><</a>
+    <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+        <span th:if="${page == pageList.number+1}" th:text="${page}"></span>
+        <span th:unless="${page == pageList.number+1}">
+            <a th:href="@{/main/paging(page=${page})}" th:text="${page}"></a>
+        </span>
+    </span>
+    <a th:href="${pageList.last} ? '#' : @{/main/paging(page=${pageList.number+2})}">></a>
+    <a th:href="@{/main/paging(page=${pageList.totalPages})}">>></a>
 </body>
 </html>

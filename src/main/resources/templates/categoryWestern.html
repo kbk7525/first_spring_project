@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>양식</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>제목</th>
+        <th>식당이름</th>
+        <th>작성자</th>
+        <th>카테고리</th>
+        <th>별점</th>
+    </tr>
+    <tr th:each="list: ${list}">
+        <td><a th:href="@{|/board/${list.num}|}" th:text="${list.title}"></a></td>
+        <td th:text="${list.restaurant}"></td>
+        <td th:text="${list.id}"></td>
+        <td th:text="${list.category}"></td>
+        <td th:text="${list.rate}"></td>
+    </tr>
+</table>
+</body>
+</html>

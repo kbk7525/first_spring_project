@@ -3,17 +3,25 @@ package project.tasteroad.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import project.tasteroad.dto.BoardDTO;
+import project.tasteroad.dto.BoardInterface;
 import project.tasteroad.dto.MemberDTO;
+import project.tasteroad.service.BoardService;
 import project.tasteroad.service.MemberService;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
 
+
     private final MemberService memberService;
+    private final BoardService boardService;
+
     //회원가입으로 들어감
     @GetMapping("/member/save")
     public String saveMember() {
@@ -40,7 +48,7 @@ public class MemberController {
         //로그인 성공
         if(loginResult != null) {
             session.setAttribute("loginId", loginResult.getId());
-            return "redirect:/main";
+            return "redirect:/main/paging";
         }
         //실패
         else {
@@ -63,8 +71,35 @@ public class MemberController {
     }
 
     //마이페이지 이동
-    @GetMapping("member/mypage")
-    public String infoView() {
+    @GetMapping("/member/mypage")
+    public String infoView(HttpSession session, Model model) {
+        String id = (String) session.getAttribute("loginId");
+        List<BoardInterface> myList = boardService.findByMember(id);
+        model.addAttribute("myList", myList);
         return "mypage";
+    }
+
+    //비밀번호 변경 폼
+    @GetMapping("/member/update")
+    public String memberUpdate(HttpSession session, Model model) {
+        String id = (String) session.getAttribute("loginId");
+        MemberDTO memberDTO = memberService.updateMember(id);
+        model.addAttribute("updateMember", memberDTO);
+        return "updateMember";
+    }
+
+    //비밀번호 변경 후
+    @PostMapping("/member/update")
+    public String update(@ModelAttribute MemberDTO memberDTO) {
+        memberService.update(memberDTO);
+        return "redirect:/member/mypage";
+    }
+
+    //회원 탈퇴
+    @GetMapping("/member/delete")
+    public String deleteMember(HttpSession session, Long num) {
+        memberService.deleteById(num);
+        session.invalidate();
+        return "redirect:/";
     }
 }

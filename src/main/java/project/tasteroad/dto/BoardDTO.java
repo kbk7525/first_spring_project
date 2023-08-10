@@ -18,6 +18,15 @@ public class BoardDTO {
     private String latitude; //위도
     private String longitude; //경도
 
+    public BoardDTO(Long num, String id, String title, String category, String rate, String restaurant) {
+        this.num = num;
+        this.id = id;
+        this.title = title;
+        this.category = category;
+        this.rate = rate;
+        this.restaurant = restaurant;
+    }
+
     public static BoardDTO toBoardDTO(BoardEntity boardEntity) {
         BoardDTO boardDTO = new BoardDTO();
         boardDTO.setNum(boardEntity.getNum());

@@ -1,8 +1,13 @@
 package project.tasteroad.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import project.tasteroad.dto.BoardDTO;
+import project.tasteroad.dto.BoardInterface;
 import project.tasteroad.entity.BoardEntity;
 import project.tasteroad.repository.BoardRepository;
 
@@ -49,5 +54,22 @@ public class BoardService {
         BoardEntity boardEntity = BoardEntity.toUpdateEntity(boardDTO);
         boardRepository.save(boardEntity);
         return findByNum(boardDTO.getNum());
+    }
+
+    public List<BoardInterface> findByMember(String id) {
+        return boardRepository.findByMember(id);
+    }
+
+    public List<BoardInterface> findByCategory(String category) {
+        return boardRepository.findByCategory(category);
+    }
+
+    public Page<BoardDTO> paging(Pageable pageable) {
+        int page = pageable.getPageNumber()-1;
+        int pageLimit = 10; //한페이지에 보여줄 글 개수
+        Page<BoardEntity> boardEntities = boardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "num")));
+        Page<BoardDTO> boardDTOS = boardEntities.map
+        (board-> new BoardDTO(board.getNum(), board.getId(), board.getTitle(), board.getCategory(), board.getRate(), board.getRestaurant()));
+        return boardDTOS;
     }
 }

@@ -3,7 +3,6 @@ package project.tasteroad.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import project.tasteroad.dto.BoardDTO;
-import project.tasteroad.dto.BoardInterface;
 import project.tasteroad.service.BoardService;
 
 import java.util.List;
@@ -83,34 +81,58 @@ public class BoardController {
     }
 
     //한식 카테고리
-    @GetMapping("/board/korean-food")
-    public String categoryKorea(Model model) {
-        List<BoardInterface> kFood = boardService.findByCategory("한식");
+    @GetMapping("/board/korean-food/paging")
+    public String categoryKorea(Model model,  @PageableDefault(page = 1) Pageable pageable) {
+        pageable.getPageNumber();
+        Page<BoardDTO> kFood = boardService.findByCategory("한식", pageable);
+        int blockLimit = 3;
+        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber()/blockLimit)))-1) * blockLimit+1;
+        int endPage = ((startPage + blockLimit -1) < kFood.getTotalPages()) ? startPage + blockLimit -1 : kFood.getTotalPages();
         model.addAttribute("list", kFood);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         return "categoryKorea";
     }
 
     //일식 카테고리
-    @GetMapping("/board/japanese-food")
-    public String categoryJapan(Model model) {
-        List<BoardInterface> jFood = boardService.findByCategory("일식");
+    @GetMapping("/board/japanese-food/paging")
+    public String categoryJapan(Model model, @PageableDefault(page = 1) Pageable pageable) {
+        pageable.getPageNumber();
+        Page<BoardDTO> jFood = boardService.findByCategory("일식", pageable);
+        int blockLimit = 3;
+        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber()/blockLimit)))-1) * blockLimit+1;
+        int endPage = ((startPage + blockLimit -1) < jFood.getTotalPages()) ? startPage + blockLimit -1 : jFood.getTotalPages();
         model.addAttribute("list", jFood);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         return "categoryJapan";
     }
 
     //양식 카테고리
-    @GetMapping("/board/western-food")
-    public String categoryWestern(Model model) {
-        List<BoardInterface> wFood = boardService.findByCategory("양식");
+    @GetMapping("/board/western-food/paging")
+    public String categoryWestern(Model model, @PageableDefault(page = 1) Pageable pageable) {
+        pageable.getPageNumber();
+        Page<BoardDTO> wFood = boardService.findByCategory("양식", pageable);
+        int blockLimit = 3;
+        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber()/blockLimit)))-1) * blockLimit+1;
+        int endPage = ((startPage + blockLimit -1) < wFood.getTotalPages()) ? startPage + blockLimit -1 : wFood.getTotalPages();
         model.addAttribute("list", wFood);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         return "categoryWestern";
     }
 
     //중식 카테고리
-    @GetMapping("/board/chinese-food")
-    public String categoryChina(Model model) {
-        List<BoardInterface> cFood = boardService.findByCategory("중식");
+    @GetMapping("/board/chinese-food/paging")
+    public String categoryChina(Model model, @PageableDefault(page = 1) Pageable pageable) {
+        pageable.getPageNumber();
+        Page<BoardDTO> cFood = boardService.findByCategory("중식", pageable);
+        int blockLimit = 3;
+        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber()/blockLimit)))-1) * blockLimit+1;
+        int endPage = ((startPage + blockLimit -1) < cFood.getTotalPages()) ? startPage + blockLimit -1 : cFood.getTotalPages();
         model.addAttribute("list", cFood);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         return "categoryChina";
     }
 }

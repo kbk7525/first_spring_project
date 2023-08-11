@@ -56,12 +56,22 @@ public class BoardService {
         return findByNum(boardDTO.getNum());
     }
 
-    public List<BoardInterface> findByMember(String id) {
-        return boardRepository.findByMember(id);
+    public Page<BoardDTO> findByMember(String id, Pageable pageable) {
+        int page = pageable.getPageNumber()-1;
+        int pageLimit = 10; //한페이지에 보여줄 글 개수
+        Page<BoardInterface> boardInterfaces = boardRepository.findByMember(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "num")), id);
+        Page<BoardDTO> boardDTOS = boardInterfaces.map
+                (board-> new BoardDTO(board.getNum(), board.getId(), board.getTitle(), board.getCategory(), board.getRate(), board.getRestaurant()));
+        return boardDTOS;
     }
 
-    public List<BoardInterface> findByCategory(String category) {
-        return boardRepository.findByCategory(category);
+    public Page<BoardDTO> findByCategory(String category, Pageable pageable) {
+        int page = pageable.getPageNumber()-1;
+        int pageLimit = 10; //한페이지에 보여줄 글 개수
+        Page<BoardInterface> boardInterfaces = boardRepository.findByCategory(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "num")), category);
+        Page<BoardDTO> boardDTOS = boardInterfaces.map
+                (board-> new BoardDTO(board.getNum(), board.getId(), board.getTitle(), board.getCategory(), board.getRate(), board.getRestaurant()));
+        return boardDTOS;
     }
 
     public Page<BoardDTO> paging(Pageable pageable) {

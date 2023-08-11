@@ -2,22 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
     <title>리뷰 수정</title>
 </head>
 <body>
-<h2 th:text="${update.restaurant}"></h2>
-<form action="/board/update" method="post">
-    <input type="hidden" name="num", th:value="${update.num}">
-    작성자:<input type="text" name="id" id="id" th:value="${update.id}" readonly><br>
-    제목:<input type="text" name="title" th:value="${update.title}"><br>
-    <textarea name="content" cols="30" rows="10" th:text="${update.content}"></textarea><br>
-    <input type="hidden" name="category", th:value="${update.category}">
-    <input type="hidden" name="rate", th:value="${update.rate}">
-    <input type="hidden" name="restaurant", th:value="${update.restaurant}">
-    <input type="hidden" name="latitude", th:value="${update.latitude}">
-    <input type="hidden" name="longitude", th:value="${update.longitude}">
-    <br>
-    <input type="submit" value="수정">
-</form>
+    <div class="container">
+        <h2 th:text="${update.restaurant}"></h2>
+        <form action="/board/update" method="post">
+            <input type="hidden" name="num", th:value="${update.num}">
+            <div class="mb-3">
+                <label for="id">작성자</label>
+                <input type="text" class="form-control" name="id" id="id" th:value="${update.id}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="title">제목</label>
+                <input type="text" class="form-control" name="title" id="title" th:value="${update.title}">
+            </div>
+            <div class="mb-3">
+                <textarea name="content" class="form-control" cols="30" rows="10" th:text="${update.content}"></textarea>
+            </div>
+            <input type="hidden" name="category", th:value="${update.category}">
+            <input type="hidden" name="rate", th:value="${update.rate}">
+            <input type="hidden" name="restaurant", th:value="${update.restaurant}">
+            <input type="hidden" name="latitude", th:value="${update.latitude}">
+            <input type="hidden" name="longitude", th:value="${update.longitude}">
+            <button type="submit" class="btn btn-primary float-right">수정</button>
+        </form>
+    </div>
 </body>
 </html>

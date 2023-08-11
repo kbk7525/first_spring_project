@@ -2,6 +2,9 @@ package project.tasteroad.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -71,11 +74,18 @@ public class MemberController {
     }
 
     //마이페이지 이동
-    @GetMapping("/member/mypage")
-    public String infoView(HttpSession session, Model model) {
+    @GetMapping("/member/mypage/paging")
+    public String infoView(HttpSession session, Model model, @PageableDefault(page = 1) Pageable pageable) {
         String id = (String) session.getAttribute("loginId");
-        List<BoardInterface> myList = boardService.findByMember(id);
+        pageable.getPageNumber();
+        Page<BoardDTO> myList = boardService.findByMember(id, pageable);
         model.addAttribute("myList", myList);
+        int blockLimit = 3;
+        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber()/blockLimit)))-1) * blockLimit+1;
+        int endPage = ((startPage + blockLimit -1) < myList.getTotalPages()) ? startPage + blockLimit -1 : myList.getTotalPages();
+        model.addAttribute("pageList", myList);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         return "mypage";
     }
 
@@ -92,7 +102,7 @@ public class MemberController {
     @PostMapping("/member/update")
     public String update(@ModelAttribute MemberDTO memberDTO) {
         memberService.update(memberDTO);
-        return "redirect:/member/mypage";
+        return "redirect:/member/mypage/paging";
     }
 
     //회원 탈퇴

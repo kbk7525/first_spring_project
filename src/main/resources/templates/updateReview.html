@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <title>리뷰 수정</title>
 </head>
 <body>
@@ -26,8 +27,17 @@
             <input type="hidden" name="restaurant", th:value="${update.restaurant}">
             <input type="hidden" name="latitude", th:value="${update.latitude}">
             <input type="hidden" name="longitude", th:value="${update.longitude}">
-            <button type="submit" class="btn btn-primary float-right">수정</button>
+            <button type="button" class="btn btn-primary float-right modified">수정</button>
         </form>
     </div>
+    <script th:inline="javascript">
+        $(".modified").click(function () {
+            if(!confirm("수정하시겠습니까?")) {
+                return;
+            }
+            $("form").attr("action", "/board/update")
+                .attr("method", "post").submit();
+        });
+    </script>
 </body>
 </html>

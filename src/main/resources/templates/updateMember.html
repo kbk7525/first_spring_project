@@ -3,17 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <title>회원 정보 수정</title>
 </head>
 <body>
-    <form action="/member/update" method="post">
-        <input type="hidden" th:value="${updateMember.num}" name="num">
-        이름:<input type="text" th:value="${updateMember.name}" name="name"readonly><br>
-        아이디: <input type="text" th:value="${updateMember.id}" name="id"readonly><br>
-        비밀번호:<input type="password" th:value="${updateMember.pw}"readonly><br>
-        변경할 비밀번호: <input type="password" name="pw" placeholder="새 비밀번호를 입력하세요" autofocus><br>
-        <input type="submit" value="완료">
-    </form>
-    <button th:onclick="|location.href='@{/member/delete/(num=${updateMember.num})}'|">탈퇴</button>
+    <div class="container">
+        <button type="button" class="btn btn-primary float-right removeMem" th:onclick="|location.href='@{/member/delete/(num=${updateMember.num})}'|">탈퇴</button>
+        <h2>회원 정보 수정</h2>
+        <form action="/member/update" method="post">
+            <input type="hidden" th:value="${updateMember.num}" name="num">
+            <div class="mb-3">
+                <label for="name">이름</label>
+                <input type="text" id="name" class="form-control" th:value="${updateMember.name}" name="name"readonly>
+            </div>
+            <div class="mb-3">
+                <label for="id">아이디</label>
+                <input type="text" id="id" class="form-control" th:value="${updateMember.id}" name="id"readonly>
+            </div>
+            <div class="mb-3">
+                <label for="pw">현재 비밀번호</label>
+                <input type="text" id="pw" class="form-control" th:value="${updateMember.pw}"readonly>
+            </div>
+            <div class="mb-3">
+                <label for="updatePw">변경할 비밀번호</label>
+                <input type="text" id="updatePw" class="form-control" name="pw" placeholder="새 비밀번호를 입력하세요" autofocus>
+            </div>
+            <button type="submit" class="btn btn-primary float-right">수정</button>
+        </form>
+    </div>
+    <script th:inline="javascript">
+        $(".removeMem").click(function () {
+            if(!confirm("탈퇴하시겠습니까?")) {
+                return;
+            }
+            $("form").submit();
+        })
+    </script>
 </body>
 </html>

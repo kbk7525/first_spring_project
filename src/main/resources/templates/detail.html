@@ -3,70 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <title>리뷰 상세보기</title>
 </head>
 <body>
-    <table>
-        <tr>
-            <th>제목</th>
-            <td th:text="${board.title}"></td>
-        </tr>
-        <tr>
-            <th>내용</th>
-            <td th:text="${board.content}"></td>
-        </tr>
-        <tr>
-            <th>식당이름</th>
-            <td th:text="${board.restaurant}"></td>
-        </tr>
-        <tr>
-            <th>별점</th>
-            <td th:text="${board.rate}"></td>
-        </tr>
-        <tr>
-            <th>카테고리</th>
-            <td th:text="${board.category}"></td>
-        </tr>
-        <tr>
-            <th>작성자</th>
-            <td th:text="${board.id}"></td>
-        </tr>
-    </table>
-    <br>
-    <div id="map" style="width:60%;height:350px;"></div>
+    <div class="container">
+        <button class="btn btn-primary float-right" onclick="list()">목록</button>
+        <h2 th:text="${board.title}"></h2>
+        <table class="table table-striped">
+            <tr>
+                <th>식당이름</th>
+                <td th:text="${board.restaurant}"></td>
+            </tr>
+            <tr>
+                <th>별점</th>
+                <td th:text="${board.rate}"></td>
+            </tr>
+            <tr>
+                <th>내용</th>
+                <td th:text="${board.content}"></td>
+            </tr>
+            <tr>
+                <th>카테고리</th>
+                <td th:text="${board.category}"></td>
+            </tr>
+            <tr>
+                <th>작성자</th>
+                <td th:text="${board.id}"></td>
+            </tr>
+        </table>
+        <br>
+        <div id="map" style="width:100%;height:350px;"></div>
 
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0454ac8612a2837299b083a6aa492029"></script>
-    <script th:inline="javascript">
-        let obj = [[${board}]];
-        let mapContainer = document.getElementById('map'), // 지도를 표시할 div
-            mapOption = {
-                center: new kakao.maps.LatLng(obj.latitude, obj.longitude), // 지도의 중심좌표
-                level: 3 // 지도의 확대 레벨
-            };
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0454ac8612a2837299b083a6aa492029"></script>
+        <script th:inline="javascript">
+            let obj = [[${board}]];
+            let mapContainer = document.getElementById('map'), // 지도를 표시할 div
+                mapOption = {
+                    center: new kakao.maps.LatLng(obj.latitude, obj.longitude), // 지도의 중심좌표
+                    level: 3 // 지도의 확대 레벨
+                };
 
-        let map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+            let map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-        // 마커가 표시될 위치입니다
-        let markerPosition  = new kakao.maps.LatLng(obj.latitude, obj.longitude);
+            // 마커가 표시될 위치입니다
+            let markerPosition  = new kakao.maps.LatLng(obj.latitude, obj.longitude);
 
-        // 마커를 생성합니다
-        let marker = new kakao.maps.Marker({
-            position: markerPosition
-        });
+            // 마커를 생성합니다
+            let marker = new kakao.maps.Marker({
+                position: markerPosition
+            });
 
-        // 마커가 지도 위에 표시되도록 설정합니다
-        marker.setMap(map);
-    </script>
-    <br>
+            // 마커가 지도 위에 표시되도록 설정합니다
+            marker.setMap(map);
+        </script>
+        <br>
 
-    <!-- 작성자와 지금로그인한 사용자가 같을경우에만 수정 삭제 가능 -->
-    <div th:if="${session.loginId == board.id}">
-        <button onclick="update()">수정</button>
-        <button th:onclick="|location.href='@{/board/delete(num=${board.num})}'|">삭제</button>
+        <!-- 작성자와 지금로그인한 사용자가 같을경우에만 수정 삭제 가능 -->
+        <div th:if="${session.loginId == board.id}" class="float-right">
+            <button type="button" class="btn btn-primary" onclick="update()">수정</button>
+            <button type="button" class="btn btn-primary removeReview" th:onclick="|location.href='@{/board/delete(num=${board.num})}'|">삭제</button>
+        </div>
     </div>
-    <button onclick="list()">목록</button>
 </body>
-<script>
+<script th:inline="javascript">
     const update = () => {
         const num = [[${board.num}]];
         location.href = "/board/update/" +num;
@@ -75,5 +75,11 @@
         const page = [[${page}]];
         location.href = "/main/paging?page="+page;
     }
+    $(".removeReview").click(function () {
+        if(!confirm("삭제하시겠습니까?")) {
+            return;
+        }
+        $("form").submit();
+    })
 </script>
 </html>
